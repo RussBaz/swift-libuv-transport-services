@@ -1,5 +1,4 @@
 import Foundation
-import NIOConcurrencyHelpers
 
 final class FIFOQueue<T> {
     private var items: [T] = []

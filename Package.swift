@@ -45,7 +45,6 @@ let package = Package(
             name: "UVTransportServices",
             dependencies: [
                 .target(name: "Clibuv"),
-                .product(name: "NIO", package: "swift-nio"),
                 .product(name: "NIOCore", package: "swift-nio"),
             ],
             swiftSettings: swiftSettings

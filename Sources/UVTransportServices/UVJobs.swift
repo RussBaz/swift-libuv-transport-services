@@ -1,6 +1,5 @@
 import Clibuv
 import Foundation
-import NIOConcurrencyHelpers
 
 private func handleAsyncJobs(_ req: UnsafeMutablePointer<uv_async_t>?) {
     guard let req else { return }

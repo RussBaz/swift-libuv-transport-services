@@ -1,10 +1,11 @@
 import Dispatch
-import NIOConcurrencyHelpers
+import Foundation
 import NIOCore
 
 public final class UVEventLoopGroup: EventLoopGroup {
     private let eventLoops: [UVEventLoop]
-    private let loopIndex: NIOLockedValueBox<[UVEventLoop].Index>
+    private let indexLock = NSLock()
+    private var loopIndex: [UVEventLoop].Index
 
     public init(loopCount: Int = 1) {
         let loopCount = max(loopCount, 1)
@@ -14,17 +15,18 @@ public final class UVEventLoopGroup: EventLoopGroup {
         }
 
         eventLoops = loops
-        loopIndex = NIOLockedValueBox(loops.startIndex)
+        loopIndex = loops.startIndex
     }
 
     public func next() -> any EventLoop {
-        loopIndex.withLockedValue {
-            $0 = eventLoops.index(after: $0)
-            if $0 == eventLoops.endIndex {
-                $0 = eventLoops.startIndex
-            }
-            return eventLoops[$0]
+        indexLock.lock()
+        defer { indexLock.unlock() }
+        loopIndex = eventLoops.index(after: loopIndex)
+        if loopIndex == eventLoops.endIndex {
+            loopIndex = eventLoops.startIndex
         }
+
+        return eventLoops[loopIndex]
     }
 
     public func makeIterator() -> EventLoopIterator {

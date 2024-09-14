@@ -13,3 +13,13 @@ It is pretty much still in a proof of concept state. Basic EventLoop and EventLo
 ## Help Needed?
 
 Definitely! Any help will be appreciated in any form. Thanks!
+
+## How To Use
+
+Make sure that `libuv` is installed before building the code. Please follow the official docs for the installation instructions. However, here are some quick suggestions:
+
+For macOS: `brew install libuv pkg-config`
+
+For Windows: `vcpkg install libuv`
+
+Next, if you are on a Windows machine, you need to manually provide compiler flags. You need to add `libuv` `include` folder to the compiler (with `-I` flag) and the actual location of the library (as `-L` flag) Please refer to clang docs if this is not working out. I am myself looking for a simpler and safer way of doing it.
